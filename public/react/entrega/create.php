@@ -23,6 +23,5 @@ if($read->getResult()) {
     $up = new \Conn\Update();
     $up->exeUpdate("trabalho", ["entregue" => !0, "data_de_entrega" => date("Y-m-d H:i:s"), "valor_de_entrega" => $valor_de_entrega], "WHERE id =:id", "id={$dados['trabalho']}");
 
-    var_dump(\Helpers\Helper::postRequest(HOME . "api/createView", array_merge(['key' => '98f012900e9a5b6abddd5dfa15e61f75', 'view_name' => $trabalho['view_name']], $dados)));
-    die;
+    \Helpers\Helper::postRequest(HOME . "api/createView", array_merge(['key' => '98f012900e9a5b6abddd5dfa15e61f75', 'view_name' => $trabalho['view_name']], $dados));
 }

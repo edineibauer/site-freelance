@@ -36,6 +36,69 @@ if (!empty($fonts) && \Helpers\Check::isJson($fonts))
 \Helpers\Helper::createFolderIfNoExist(PATH_HOME . "public/assets/view/" . $name);
 
 /**
+ * Troca as referências de mídia no HTML CSS e JS pelas referências no projeto final
+ * @param string $midia
+ * @param string $url
+ * @param string $html
+ * @param string $cssContent
+ * @param string $jsContent
+ * @return array
+ */
+function changeMidia(string $midia, string $url, string $html, string $cssContent, string $jsContent) {
+
+    //troca midia no HTML
+    $changes = explode($midia, $html);
+    if (count($changes) > 1) {
+        foreach ($changes as $i => $change) {
+            if (!empty($change) && count($changes) -1 > $i) {
+                $link = explode('"', str_replace("'", '"', $change));
+                if(count($link) > 1) {
+                    $link = $link[count($link) - 1] . $midia;
+                    $html = str_replace($link, HOME . $url, $html);
+                    $cssContent = str_replace($link, HOME . $url, $cssContent);
+                    $jsContent = str_replace($link, HOME . $url, $jsContent);
+                }
+            }
+        }
+    }
+
+    //troca midia no CSS
+    $changes = explode($midia, $cssContent);
+    if (count($changes) > 1) {
+        foreach ($changes as $i => $change) {
+            if (!empty($change) && count($changes) -1 > $i) {
+                $link = explode('"', str_replace("'", '"', $change));
+                $link2 = explode('(', $change);
+                if(count($link) > 1) {
+                    $link = $link[count($link) - 1] . $midia;
+                    $cssContent = str_replace($link, HOME . $url, $cssContent);
+                }
+                if(count($link2) > 1) {
+                    $link = $link2[count($link2) - 1] . $midia;
+                    $cssContent = str_replace($link, HOME . $url, $cssContent);
+                }
+            }
+        }
+    }
+
+    //troca midia no JS
+    $changes = explode($midia, $jsContent);
+    if (count($changes) > 1) {
+        foreach ($changes as $i => $change) {
+            if (!empty($change) && count($changes) -1 > $i) {
+                $link = explode('"', str_replace("'", '"', $change));
+                if(count($link) > 1) {
+                    $link = $link[count($link) - 1] . $midia;
+                    $jsContent = str_replace($link, HOME . $url, $jsContent);
+                }
+            }
+        }
+    }
+
+    return [$html, $cssContent, $jsContent];
+}
+
+/**
  * Cria view file
  */
 $f = fopen(PATH_HOME . "public/view/" . $name . ".php", "w+");
@@ -71,25 +134,17 @@ if (!empty($js)) {
  */
 if (!empty($midias)) {
     foreach ($midias as $midia) {
-        $url = "assets/view/" . $name . "/" . $midia['name'] . "." . $midia['type'];
-        copy($midia['url'], PATH_HOME . "public/" . $url);
+        $url = "public/assets/view/" . $name . "/" . $midia['name'] . "." . $midia['type'];
+        copy($midia['url'], PATH_HOME . $url);
 
         /**
          * Atualiza links da mídia em HTML, CSS e JS
          */
-        $changes = explode($midia['name'] . "." . $midia['type'], $html);
-        if (count($changes) > 1) {
-            foreach ($changes as $change) {
-                if (!empty($change)) {
-                    $link = explode('"', str_replace("'", '"', $change));
-                    if(count($link) > 1) {
-                        $link = $link[count($link) - 1] . $midia['name'] . "." . $midia['type'];
-                        $html = str_replace($link, HOME . $url, $html);
-                        $cssContent = str_replace($link, HOME . $url, $cssContent);
-                        $jsContent = str_replace($link, HOME . $url, $jsContent);
-                    }
-                }
-            }
+        if($midia['type'] === "webp") {
+            foreach (["png", "jpg", "jpeg", "gif", "bmp", "svg"] as $type)
+                list($html, $cssContent, $jsContent) = changeMidia($midia['name'] . "." . $type, $url, $html, $cssContent, $jsContent);
+        } else {
+            list($html, $cssContent, $jsContent) = changeMidia($midia['name'] . "." . $midia['type'], $url, $html, $cssContent, $jsContent);
         }
     }
 }
