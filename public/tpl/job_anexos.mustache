@@ -1,0 +1,27 @@
+{{#.}}
+    <div class="col padding-small mock-file border-bottom transition-easy relative" id="mock-{{name}}"
+         style="background:#fbfbfb;overflow:hidden; height: 36px;">
+        <a href="{{url}}" target="_blank" class="left file_list">
+            {{#isImage}}
+                <img src='{{url}}' alt='' title='Imagem {{nome}}' class='left radius'/>
+            {{/isImage}}
+            {{^isImage}}
+                <svg class='icon svgIcon'>
+                    <use xlink:href='#{{icon}}'></use>
+                </svg>
+            {{/isImage}}
+        </a>
+
+        {{#size}}
+            <div class="left padding-small font-medium" style="max-width: 65%">
+                {{name}}.{{type}}
+            </div>
+
+            <a href="{{url}}" download="{{nome}}.{{type}}" target="_blank" class="right no-select">
+                <i class="material-icons pointer opacity hover-opacity-off padding-4">get_app</i>
+            </a>
+            <small class="right padding-medium font-small">{{sizeName}}</small>
+            <small class="right padding-medium font-small">{{data}}</small>
+        {{/size}}
+    </div>
+{{/.}}

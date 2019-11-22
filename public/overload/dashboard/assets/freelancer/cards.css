@@ -1,0 +1,3 @@
+.card:hover > .overflow-hidden > img {
+    transform: scale(1.1)!important;
+}

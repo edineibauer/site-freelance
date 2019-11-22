@@ -1,0 +1,27 @@
+[
+  {
+    "href": "dashboard",
+    "attr": "rel='dashboard'",
+    "li": {
+      "class": "s-hide"
+    },
+    "class": "theme-text-aux",
+    "html": "<i class='material-icons left'>dashboard</i>"
+  },
+  {
+    "href": "opcoes",
+    "li": {
+      "class": "s-hide"
+    },
+    "attr": "rel='opcoes'",
+    "class": "theme-text-aux",
+    "html": "<i class='material-icons left'>settings</i>"
+  },
+  {
+    "funcao": "toggleSidebar",
+    "li": {
+        "class": "not-menu-li"
+    },
+    "html": "<div id='core-header-perfil'></div>"
+  }
+]

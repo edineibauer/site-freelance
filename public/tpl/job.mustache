@@ -1,0 +1,109 @@
+
+<h1 class="font-bold col padding-xlarge s-padding-medium" id="workname">
+    <a href="#back" class="left color-white" style="margin-left: -10px">
+        <i class="material-icons left font-xxxlarge padding-small s-font-xxlarge s-padding-0 s-padding-right">keyboard_arrow_left</i>
+    </a>
+    <div class="left s-font-large s-padding-4">{{nome_da_atividade}}</div>
+</h1>
+
+<div class="col padding-medium" style="overflow-x: auto">
+    <div class="col padding-right padding-left" style="height: 500px; width: max-content">
+        {{#imagem}}
+            <img src="{{urls.500}}" class="left transition-easy" height="480"
+                 style="height: 480px;border: solid 10px #eee;"/>
+        {{/imagem}}
+    </div>
+</div>
+
+<div class="col padding-xlarge padding-4">
+    <div class="col padding-24 font-xlarge color-text-gray-dark">{{descricao}}</div>
+
+    <div class="col">
+        {{{anexos}}}
+    </div>
+
+    <ul class="col font-large padding-32 text-uppercase color-text-gray">
+        {{^entregue}}
+            {{#urgente}}
+                <li class="col font-bold">URGÊNTE</li>
+            {{/urgente}}
+            <li class="col">
+                <div class="left">Entrega em até: {{prazo_em_dias}} dias úteis.</div>
+                <i class="material-icons pointer left" title="após o prazo, penalização de {{penalidade}}% ao dia.">info</i>
+            </li>
+            {{^isInPrazo}}
+                <li class="col">
+                    <div class="color-text-red left">Atrasado!</div>
+                    <i class="material-icons left padding-tiny"
+                       title="Atrasos geram multa, não atrase muito, senão você não recebe nada!">info</i>
+                </li>
+            {{/isInPrazo}}
+            <li class="col">Valor para desenvolvimento: R$ {{valor}}</li>
+        {{/entregue}}
+        {{#entregue}}
+            <li class="col">
+                <div class="left">Projeto entregue e em revisão.</div>
+            </li>
+            <li class="col">
+                <div class="left">Você irá receber R$ {{valor_de_entrega}}.</div>
+            </li>
+        {{/entregue}}
+    </ul>
+
+    <div class="col padding-24">
+        {{#entregue}}
+            <div class="col padding-8 color-text-gray">
+                Você pode revisar a sua entrega. Uma cópia original da entrega será utilizada para fins de avaliação.
+            </div>
+            <div class="col border-top padding-top">
+                <div class="col padding-4"></div>
+                <button onclick="editar({{id}})" class="btn margin-bottom margin-right left margin-0 color-green radius">
+                    <div class="left padding-small">Revisar material entregue</div>
+                    <i class="material-icons left padding-tiny"
+                       title="Você pode atualizar sua entrega, melhorando o resultado">info</i>
+                </button>
+            </div>
+        {{/entregue}}
+        {{^entregue}}
+            {{#isStarted}}
+                <div class="col padding-8 color-text-gray">
+                    Caso não consiga entregar esta tarefa a tempo, informe abaixo!
+                </div>
+                <div class="col border-top padding-top">
+                    <div class="col padding-4"></div>
+                    <button onclick="finalizar({{id}})" class="btn margin-bottom margin-right left margin-0 color-green radius">
+                        <div class="left padding-small">Enviar Material e Terminar</div>
+                        <i class="material-icons left padding-tiny"
+                           title="Faça o envio e conclua a atividade">info</i>
+                    </button>
+                    <button onclick="desistir({{id}})" class="btn margin-bottom left margin-0 color-red radius">
+                        <div class="left padding-small">Cancelar</div>
+                        <i class="material-icons left padding-tiny"
+                           title="Passa a oportunidade para outro freelance">info</i>
+                    </button>
+                </div>
+            {{/isStarted}}
+            {{^isStarted}}
+                <div class="col padding-8 color-text-gray">
+                    Este serviço foi designado a você! Comece a fazer nas próximas 24h ou outros freelancers entrarão na
+                    disputa.
+                </div>
+                <div class="col border-top padding-top">
+                    <div class="col padding-4"></div>
+                    <button onclick="aceitar({{id}})" class="btn margin-bottom left radius color-green">
+                        <div class="left padding-small">Aceitar, começar a fazer!</div>
+                        <i class="material-icons left padding-tiny" title="Seu prazo começa a valer">info</i>
+                    </button>
+                    <button onclick="cancelar({{id}})" class="btn margin-bottom left margin-0 color-red radius">
+                        <div class="left padding-small">Não, obrigado</div>
+                        <i class="material-icons left padding-tiny"
+                           title="Passa a oportunidade para outro freelance">info</i>
+                    </button>
+                </div>
+            {{/isStarted}}
+        {{/entregue}}
+    </div>
+
+    <div class="col padding-32"></div>
+
+</div>

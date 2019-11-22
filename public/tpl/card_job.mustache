@@ -1,0 +1,67 @@
+{{#.}}
+    <div class="col s12 m6 l3 padding-small" id="card-job-{{id}}">
+        <div class="card overflow-hidden radius hover-shadow">
+            <a href="job/{{id}}" data-animation="forward" data-target="#dashboard"
+               class="col padding-bottom overflow-hidden" style="height: 300px;">
+                <img src="{{imagem}}" class="left transition-easy" style="height: 100%;width: auto;"/>
+            </a>
+
+            <h1 class="padding-medium col font-large font-bold color-text-gray text-uppercase"
+                style="height: 40px;overflow: hidden;">{{nome_da_atividade}}</h1>
+
+            <div class="col padding-medium text-uppercase color-text-gray overflow-hidden" style="height: 35px;">
+                {{^entregue}}
+                    <div class="col s6 border-right">
+                        {{#isInPrazo}}
+                            Prazo {{prazo_em_dias}} dias
+                        {{/isInPrazo}}
+                        {{^isInPrazo}}
+                            <i class="material-icons left pointer"
+                               title="Atrasos geram multa, não atrase muito, senão você não recebe nada!">info</i>
+                            <div class="color-text-red left padding-tiny">Atrasado!</div>
+                        {{/isInPrazo}}
+                    </div>
+                    <div class="col s6 align-center">
+                        R$ {{valor}}
+                    </div>
+
+                {{/entregue}}
+                {{#entregue}}
+                    <div class="col s6 border-right">
+                        Entregue dia: {{data_de_entrega}}
+                    </div>
+                    <div class="col s6 align-center">
+                        R$ {{valor_de_entrega}}
+                    </div>
+                {{/entregue}}
+            </div>
+
+            <div class="col padding-medium">
+                <div class="col border-top padding-top">
+                    <div class="col padding-4"></div>
+                    {{^entregue}}
+                        {{#isStarted}}
+                            <a href="job/{{id}}" data-animation="forward" data-target="#dashboard"
+                               class="btn left radius color-green">Acessar</a>
+                            <button onclick="cancelar({{id}})"
+                                    class="btn right margin-0 color-gray-light color-text-red radius">Cancelar
+                            </button>
+                        {{/isStarted}}
+                        {{^isStarted}}
+                            <a href="job/{{id}}" data-animation="forward" data-target="#dashboard"
+                               class="btn left radius theme">Saiba mais</a>
+                            <button onclick="cancelar({{id}})"
+                                    class="btn right margin-0 color-white color-text-gray color-hover-text-white color-hover-red radius">
+                                Não, obrigado
+                            </button>
+                        {{/isStarted}}
+                    {{/entregue}}
+                    {{#entregue}}
+                        <a href="job/{{id}}" data-animation="forward" data-target="#dashboard"
+                           class="btn left radius color-blue">Acessar Revisão</a>
+                    {{/entregue}}
+                </div>
+            </div>
+        </div>
+    </div>
+{{/.}}
