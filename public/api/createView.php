@@ -1,5 +1,6 @@
 <?php
 
+use Helpers\Check;
 use Helpers\Helper;
 
 $name = filter_input(INPUT_POST, 'view_name', FILTER_DEFAULT);
@@ -7,6 +8,7 @@ $html = filter_input(INPUT_POST, 'html', FILTER_DEFAULT);
 $css = filter_input(INPUT_POST, 'css', FILTER_DEFAULT);
 $cssLink = filter_input(INPUT_POST, 'links_externos_css', FILTER_DEFAULT);
 $js = filter_input(INPUT_POST, 'javascript', FILTER_DEFAULT);
+$jsLink = filter_input(INPUT_POST, 'links_externos_js', FILTER_DEFAULT);
 $midias = filter_input(INPUT_POST, 'midias', FILTER_DEFAULT);
 $fonts = filter_input(INPUT_POST, 'fonts', FILTER_DEFAULT);
 $param = [
@@ -20,22 +22,25 @@ $param = [
 $cssContent = "";
 $jsContent = "";
 
-if (!empty($html) && \Helpers\Check::isJson($html))
+if (!empty($html) && Check::isJson($html))
     $html = file_get_contents(json_decode($html, !0)[0]['url']);
 
-if (!empty($css) && \Helpers\Check::isJson($css))
+if (!empty($css) && Check::isJson($css))
     $css = json_decode($css, !0);
 
-if (!empty($cssLink) && \Helpers\Check::isJson($cssLink))
+if (!empty($cssLink) && Check::isJson($cssLink))
     $cssLink = json_decode($cssLink, !0);
 
-if (!empty($js) && \Helpers\Check::isJson($js))
+if (!empty($jsLink) && Check::isJson($jsLink))
+    $jsLink = json_decode($jsLink, !0);
+
+if (!empty($js) && Check::isJson($js))
     $js = json_decode($js, !0);
 
-if (!empty($midias) && \Helpers\Check::isJson($midias))
+if (!empty($midias) && Check::isJson($midias))
     $midias = json_decode($midias, !0);
 
-if (!empty($fonts) && \Helpers\Check::isJson($fonts))
+if (!empty($fonts) && Check::isJson($fonts))
     $fonts = json_decode($fonts, !0);
 
 Helper::createFolderIfNoExist(PATH_HOME . "public/assets/view");
@@ -192,15 +197,19 @@ $cssContent = $mCss->minify();
 /**
  * Cria JS file
  */
+$mJs = new MatthiasMullie\Minify\JS("");
 if (!empty($js)) {
-
-    $mJs = new MatthiasMullie\Minify\JS("");
     foreach ($js as $c) {
         $mJs->add(file_get_contents($c['url']));
     }
-
-    $jsContent = $mJs->minify();
 }
+
+if (!empty($jsLink)) {
+    foreach ($jsLink as $c)
+        $mJs->add(file_get_contents($c['link'], $name));
+}
+
+$jsContent = $mJs->minify();
 
 /**
  * Cria Midias
