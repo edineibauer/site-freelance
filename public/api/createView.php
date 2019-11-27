@@ -1,8 +1,11 @@
 <?php
 
+use Helpers\Helper;
+
 $name = filter_input(INPUT_POST, 'view_name', FILTER_DEFAULT);
 $html = filter_input(INPUT_POST, 'html', FILTER_DEFAULT);
 $css = filter_input(INPUT_POST, 'css', FILTER_DEFAULT);
+$cssLink = filter_input(INPUT_POST, 'links_externos_css', FILTER_DEFAULT);
 $js = filter_input(INPUT_POST, 'javascript', FILTER_DEFAULT);
 $midias = filter_input(INPUT_POST, 'midias', FILTER_DEFAULT);
 $fonts = filter_input(INPUT_POST, 'fonts', FILTER_DEFAULT);
@@ -23,6 +26,9 @@ if (!empty($html) && \Helpers\Check::isJson($html))
 if (!empty($css) && \Helpers\Check::isJson($css))
     $css = json_decode($css, !0);
 
+if (!empty($cssLink) && \Helpers\Check::isJson($cssLink))
+    $cssLink = json_decode($cssLink, !0);
+
 if (!empty($js) && \Helpers\Check::isJson($js))
     $js = json_decode($js, !0);
 
@@ -32,8 +38,8 @@ if (!empty($midias) && \Helpers\Check::isJson($midias))
 if (!empty($fonts) && \Helpers\Check::isJson($fonts))
     $fonts = json_decode($fonts, !0);
 
-\Helpers\Helper::createFolderIfNoExist(PATH_HOME . "public/assets/view");
-\Helpers\Helper::createFolderIfNoExist(PATH_HOME . "public/assets/view/" . $name);
+Helper::createFolderIfNoExist(PATH_HOME . "public/assets/view");
+Helper::createFolderIfNoExist(PATH_HOME . "public/assets/view/" . $name);
 
 /**
  * Troca as referências de mídia no HTML CSS e JS pelas referências no projeto final
@@ -99,23 +105,89 @@ function changeMidia(string $midia, string $url, string $html, string $cssConten
 }
 
 /**
+ * @param string $urlOnline
+ * @param string $name
+ * @return string
+ */
+function getCss(string $urlOnline, string $name): string
+{
+    try {
+        Helper::createFolderIfNoExist(PATH_HOME . "public/assets/fonts");
+        $data = @file_get_contents($urlOnline);
+        $urlSplit = explode("/", $urlOnline);
+        $baseUrl = preg_match("/^(http|\/\/)/i", $urlOnline) ? "//" . $urlSplit[2] . "/" : "";
+
+        foreach (explode('url(', $data) as $i => $u) {
+            if ($i > 0) {
+                $url = explode(')', $u)[0];
+                $urlFixed = $url;
+                $urlName = "public/assets/fonts/" . pathinfo($url, PATHINFO_BASENAME);
+
+                //faz a troca de navegação de pastas para trás da url
+                if(preg_match("/^..\//i", $url)) {
+                    $urlFolder = pathinfo($urlOnline, PATHINFO_DIRNAME);
+                    $urlFolderSplit = explode("/", $urlFolder);
+                    $urlFolder .= "/";
+                    $totalSplit = count($urlFolderSplit);
+
+                    foreach (array_keys(explode("../", $url)) as $iii) {
+                        if($iii > 0)
+                            $urlFolder = str_replace($urlFolderSplit[$totalSplit - $iii] . "/", "", $urlFolder);
+                    }
+
+                    $urlFixed = $urlFolder . str_replace("../", "", $url);
+                } elseif(preg_match("/^.\//i", $url)) {
+                    $urlFixed = str_replace("./", $baseUrl, $url);
+                }
+
+                if(!file_exists(PATH_HOME . $urlName)) {
+                    $urlData = @file_get_contents($urlFixed);
+                    if ($urlData) {
+                        $f = fopen(PATH_HOME . $urlName, "w+");
+                        fwrite($f, $urlData);
+                        fclose($f);
+
+                        $data = str_replace($url, HOME . $urlName . "?v=" . VERSION, $data);
+                    } else {
+                        $before = "@font-face" . explode("@font-face", $u[$i - 1])[1] . "url(";
+                        $after = explode("}", $u)[0];
+                        $data = str_replace($before . $after, "", $data);
+                    }
+                } else {
+                    $data = str_replace($url, HOME . $urlName . "?v=" . VERSION, $data);
+                }
+            }
+        }
+
+        return $data;
+
+    } catch (Exception $e) {
+        return "";
+    }
+}
+
+/**
  * Cria view file
  */
 $f = fopen(PATH_HOME . "public/view/" . $name . ".php", "w+");
-fwrite($f, "<div id='core-content-view' class='col'></div>");
+fwrite($f, "<div id='core-content-view' style='float: left;width: 100%'></div>");
 fclose($f);
 
 /**
  * Cria CSS file
  */
+$mCss = new MatthiasMullie\Minify\CSS("");
 if (!empty($css)) {
-
-    $mCss = new MatthiasMullie\Minify\CSS("");
     foreach ($css as $c)
         $mCss->add(file_get_contents($c['url']));
-
-    $cssContent = $mCss->minify();
 }
+
+if (!empty($cssLink)) {
+    foreach ($cssLink as $c)
+        $mCss->add(getCss($c['link'], $name));
+}
+
+$cssContent = $mCss->minify();
 
 /**
  * Cria JS file
@@ -123,8 +195,9 @@ if (!empty($css)) {
 if (!empty($js)) {
 
     $mJs = new MatthiasMullie\Minify\JS("");
-    foreach ($js as $c)
+    foreach ($js as $c) {
         $mJs->add(file_get_contents($c['url']));
+    }
 
     $jsContent = $mJs->minify();
 }
@@ -153,7 +226,7 @@ if (!empty($midias)) {
  * Cria Fonts
  */
 if (!empty($fonts)) {
-    \Helpers\Helper::createFolderIfNoExist(PATH_HOME . "public/assets/view/" . $name . "/fonts");
+    Helper::createFolderIfNoExist(PATH_HOME . "public/assets/view/" . $name . "/fonts");
     foreach ($fonts as $f) {
         copy($f['url'], PATH_HOME . "public/assets/view/" . $name . "/fonts/" . $f['name'] . $f['type']);
 
