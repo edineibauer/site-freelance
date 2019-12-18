@@ -1,0 +1,23 @@
+{
+  "title": "Freelance",
+  "js": [
+    "mustache",
+    "draggable",
+    "mask",
+    "grid",
+    "form",
+    "formValidate"
+  ],
+  "css": [
+    "normalize",
+    "toast",
+    "app",
+    "cards"
+  ],
+  "font": [
+    "roboto"
+  ],
+  "icon": [
+    "material"
+  ]
+}

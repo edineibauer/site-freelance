@@ -1,0 +1,1 @@
+<div id='core-content-view' style='float: left;width: 100%'></div>

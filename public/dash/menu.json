@@ -1,0 +1,18 @@
+[
+  {
+    "href": "dashboard",
+    "li": {
+      "class": "s-hide"
+    },
+    "attr": "rel='dashboard'",
+    "class": "theme-text-aux",
+    "html": "<i class='material-icons left'>dashboard</i>"
+  },
+  {
+    "funcao": "toggleSidebar",
+    "li": {
+        "class": "not-menu-li"
+    },
+    "html": "<div id='core-header-perfil'></div>"
+  }
+]
