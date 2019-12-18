@@ -1,4 +1,7 @@
-
+#core-header-img {
+    height: 60px!important;
+    margin-top: -15px!important;
+}
 
 .skill-card {
     position: absolute;

@@ -7,7 +7,7 @@
 </h1>
 
 <div class="col padding-medium" style="overflow-x: auto">
-    <div class="col padding-right padding-left" style="height: 500px; width: max-content">
+    <div class="col padding-right padding-left" style="height:auto;max-height: 500px; width: max-content">
         {{#imagem}}
             <img src="{{urls.500}}" class="left transition-easy" height="480"
                  style="height: 480px;border: solid 10px #eee;"/>
@@ -71,16 +71,16 @@
                 </div>
                 <div class="col border-top padding-top">
                     <div class="col padding-4"></div>
-                    <button onclick="finalizar({{id}})" class="btn margin-bottom margin-right left margin-0 color-green radius">
+                    <button onclick="finalizar({{id}})" class="btn margin-bottom margin-right left margin-0 theme padding-xlarge radius">
                         <div class="left padding-small">Enviar Material e Terminar</div>
                         <i class="material-icons left padding-tiny"
                            title="Faça o envio e conclua a atividade">info</i>
                     </button>
-                    <button onclick="desistir({{id}})" class="btn margin-bottom left margin-0 color-red radius">
+                    <div onclick="desistir({{id}})" class="margin-bottom left margin-0 color-hover-red-pale pointer color-text-gray pointer radius padding-xlarge">
                         <div class="left padding-small">Cancelar</div>
                         <i class="material-icons left padding-tiny"
                            title="Passa a oportunidade para outro freelance">info</i>
-                    </button>
+                    </div>
                 </div>
             {{/isStarted}}
             {{^isStarted}}
@@ -90,15 +90,15 @@
                 </div>
                 <div class="col border-top padding-top">
                     <div class="col padding-4"></div>
-                    <button onclick="aceitar({{id}})" class="btn margin-bottom left radius color-green">
+                    <button onclick="aceitar({{id}})" class="btn margin-bottom left radius theme padding-xlarge">
                         <div class="left padding-small">Aceitar, começar a fazer!</div>
                         <i class="material-icons left padding-tiny" title="Seu prazo começa a valer">info</i>
                     </button>
-                    <button onclick="cancelar({{id}})" class="btn margin-bottom left margin-0 color-red radius">
+                    <div onclick="cancelar({{id}})" class="margin-bottom left margin-0 color-hover-red-pale color-text-gray pointer radius padding-xlarge">
                         <div class="left padding-small">Não, obrigado</div>
                         <i class="material-icons left padding-tiny"
                            title="Passa a oportunidade para outro freelance">info</i>
-                    </button>
+                    </div>
                 </div>
             {{/isStarted}}
         {{/entregue}}

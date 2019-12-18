@@ -1,15 +1,25 @@
 function readTrabalhos(repeat) {
     db.exeRead("trabalho").then(trabalhos => {
         if(!isEmpty(trabalhos)) {
+            let promessas = [];
             $.each(trabalhos, function (i, e) {
-                if(!isEmpty(e.imagem))
+                if(!isEmpty(e.imagem)) {
                     trabalhos[i]['imagem'] = e.imagem[0].urls[300];
+                } else {
+                    promessas.push(db.exeRead("projeto", parseInt(trabalhos[i].vinculado_ao_projeto)).then(projeto => {
+                        if(!isEmpty(projeto) && !isEmpty(projeto.imagem)) {
+                            trabalhos[i]['imagem'] = projeto.imagem[0].urls[300];
+                        }
+                    }));
+                }
 
                 trabalhos[i].isStarted = !isEmpty(trabalhos[i].data_de_inicio);
                 trabalhos[i].isInPrazo = (!trabalhos[i].isStarted || moment().diff(moment(trabalhos[i].data_de_inicio.replace("T", " ")).add(trabalhos[i].prazo_em_dias, 'd')) < 0 );
             });
 
-            $(".dashboard-panel").htmlTemplate('card_job', trabalhos);
+            Promise.all(promessas).then(() => {
+                $(".dashboard-panel").htmlTemplate('card_job', trabalhos);
+            });
         } else {
             if(typeof repeat === "undefined") {
                 setTimeout(function () {

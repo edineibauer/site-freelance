@@ -1,17 +1,17 @@
 {{#.}}
-    <div class="col s12 m6 l3 padding-small" id="card-job-{{id}}">
+    <div class="col s12 m6 l4 padding-small" id="card-job-{{id}}">
         <div class="card overflow-hidden radius hover-shadow">
             <a href="job/{{id}}" data-animation="forward" data-target="#dashboard"
-               class="col padding-bottom overflow-hidden" style="height: 300px;">
-                <img src="{{imagem}}" class="left transition-easy" style="height: 100%;width: auto;"/>
+               class="col padding-bottom overflow-hidden" style="height: 100px;">
+                <img src="{{imagem}}" class="transition-easy" style="height: auto;width: auto;max-height: 100px;margin: auto;float: initial;display: block;"/>
             </a>
 
-            <h1 class="padding-medium col font-large font-bold color-text-gray text-uppercase"
-                style="height: 40px;overflow: hidden;">{{nome_da_atividade}}</h1>
+            <h1 class="padding-medium col font-large font-bold color-text-gray upper padding-16"
+                style="height: 50px;overflow: hidden;">{{nome_da_atividade}}</h1>
 
             <div class="col padding-medium text-uppercase color-text-gray overflow-hidden" style="height: 35px;">
                 {{^entregue}}
-                    <div class="col s6 border-right">
+                    <div class="col s6 border-right" style="border-color: #eee!important;">
                         {{#isInPrazo}}
                             Prazo {{prazo_em_dias}} dias
                         {{/isInPrazo}}
@@ -37,28 +37,28 @@
             </div>
 
             <div class="col padding-medium">
-                <div class="col border-top padding-top">
+                <div class="col border-top padding-top" style="border-color: #eee!important;">
                     <div class="col padding-4"></div>
                     {{^entregue}}
                         {{#isStarted}}
                             <a href="job/{{id}}" data-animation="forward" data-target="#dashboard"
-                               class="btn left radius color-green">Acessar</a>
-                            <button onclick="cancelar({{id}})"
-                                    class="btn right margin-0 color-gray-light color-text-red radius">Cancelar
-                            </button>
+                               class="btn left radius theme padding-xlarge">Acessar</a>
+                            <div onclick="cancelar({{id}})"
+                                    class="color-hover-red-pale right margin-0 padding-xlarge pointer radius">Cancelar
+                            </div>
                         {{/isStarted}}
                         {{^isStarted}}
                             <a href="job/{{id}}" data-animation="forward" data-target="#dashboard"
-                               class="btn left radius theme">Saiba mais</a>
-                            <button onclick="cancelar({{id}})"
-                                    class="btn right margin-0 color-white color-text-gray color-hover-text-white color-hover-red radius">
+                               class="btn left radius theme padding-xlarge">Saiba mais</a>
+                            <div onclick="cancelar({{id}})"
+                                    class="right margin-0 color-hover-red-pale radius padding-xlarge">
                                 Não, obrigado
-                            </button>
+                            </div>
                         {{/isStarted}}
                     {{/entregue}}
                     {{#entregue}}
                         <a href="job/{{id}}" data-animation="forward" data-target="#dashboard"
-                           class="btn left radius color-blue">Acessar Revisão</a>
+                           class="align-center font-bold upper theme-text-d opacity hover-opacity-off padding-16 col">Acessar Revisão</a>
                     {{/entregue}}
                 </div>
             </div>
