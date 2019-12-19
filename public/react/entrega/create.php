@@ -27,6 +27,16 @@ if($read->getResult()) {
         $up = new \Conn\Update();
         $up->exeUpdate("trabalho", ["entregue" => !0, "data_de_entrega" => date("Y-m-d H:i:s"), "valor_de_entrega" => $valor_de_entrega], "WHERE id =:id", "id={$dados['trabalho']}");
 
-        \Helpers\Helper::postRequest(HOME . "api/createView", array_merge(['key' => $projeto['chave_api'], 'view_name' => $trabalho['view_name']], $dados));
+        function endsWith($haystack, $needle)
+        {
+            $length = strlen($needle);
+            if ($length == 0) {
+                return true;
+            }
+
+            return (substr($haystack, -$length) === $needle);
+        }
+
+        \Helpers\Helper::postRequest($projeto['url'] . (!endsWith($projeto['url'], "/") ? "/" : "") . "api/createView", array_merge(['key' => $projeto['chave_api'], 'view_name' => $trabalho['view_name']], $dados));
     }
 }

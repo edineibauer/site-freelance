@@ -37,11 +37,6 @@ if($read->getResult()) {
             return (substr($haystack, -$length) === $needle);
         }
 
-        $a = \Helpers\Helper::postRequest($projeto['url'] . (!endsWith($projeto['url'], "/") ? "/" : "") . "api/createView", array_merge(['key' => $projeto['chave_api'], 'view_name' => $trabalho['view_name']], $dados));
-
-        $f = fopen(PATH_HOME . "rrrr.txt", "w+");
-        fwrite($f, $a);
-        fclose($f);
-
+        \Helpers\Helper::postRequest($projeto['url'] . (!endsWith($projeto['url'], "/") ? "/" : "") . "api/createView", array_merge(['key' => $projeto['chave_api'], 'view_name' => $trabalho['view_name']], $dados));
     }
 }
