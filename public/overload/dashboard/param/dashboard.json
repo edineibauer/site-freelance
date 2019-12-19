@@ -1,6 +1,0 @@
-{
-  "title": "Dashboard",
-  "js": ["funcaoDashboard"],
-  "css": ["w3", "cards"],
-  "!setor": "0"
-}
