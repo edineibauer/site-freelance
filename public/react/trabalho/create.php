@@ -1,8 +1,6 @@
 <?php
 
 if (empty($dados['freelance_responsavel'])) {
-    $dados['tipo_de_atividade'];
-
     $where = "WHERE status = 1 AND trabalhos_pendentes < 30";
 
     if ($dados['urgente'])
@@ -22,11 +20,13 @@ if (empty($dados['freelance_responsavel'])) {
                 $lista[$freelance['id']] += $freelance['privilegio'] - $freelance['trabalhos_pendentes'];
             }
         }
-        arsort($lista);
-        $autor = array_keys($lista)[0];
+        if(!empty($lista)) {
+            arsort($lista);
+            $autor = array_keys($lista)[0];
 
-        $up = new \Conn\Update();
-        $up->exeUpdate("trabalho", ["freelance_responsavel" => $autor], "WHERE id = :id", "id={$dados['id']}");
-        \Dashboard\Note::create("Você recebeu uma tarefa!", $dados['nome_da_atividade'], $autor);
+            $up = new \Conn\Update();
+            $up->exeUpdate("trabalho", ["freelance_responsavel" => $autor], "WHERE id = :id", "id={$dados['id']}");
+            \Dashboard\Note::create("Você recebeu uma tarefa!", \Helpers\Check::words($dados['nome_da_atividade']), $autor);
+        }
     }
 }
