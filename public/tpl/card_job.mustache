@@ -6,10 +6,10 @@
                 <img src="{{imagem}}" class="transition-easy" style="height: auto;width: auto;max-height: 100px;margin: auto;float: initial;display: block;"/>
             </a>
 
-            <h1 class="padding-medium col font-large font-bold color-text-gray upper padding-16"
-                style="height: 50px;overflow: hidden;">{{nome_da_atividade}}</h1>
+            <h1 class="padding-large col font-large font-bold color-text-gray upper padding-16"
+                style="height: 70px;overflow: hidden;">{{nome_da_atividade}}</h1>
 
-            <div class="col padding-medium text-uppercase color-text-gray overflow-hidden" style="height: 35px;">
+            <div class="col padding-large text-uppercase color-text-gray overflow-hidden" style="height: 35px;">
                 {{^entregue}}
                     <div class="col s6 border-right" style="border-color: #eee!important;">
                         {{#isInPrazo}}
@@ -27,10 +27,10 @@
 
                 {{/entregue}}
                 {{#entregue}}
-                    <div class="col s6 border-right">
-                        Entregue dia: {{data_de_entrega}}
+                    <div class="col s8 border-right">
+                        Entregue: {{data_de_entrega}}
                     </div>
-                    <div class="col s6 align-center">
+                    <div class="col s4 align-center">
                         R$ {{valor_de_entrega}}
                     </div>
                 {{/entregue}}

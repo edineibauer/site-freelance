@@ -14,6 +14,7 @@ if(typeof showTrabalho === "undefined") {
 
                 trabalho.data_de_entrega = moment(trabalho.data_de_entrega).format();
                 trabalho.anexos = Mustache.render(templates['job_anexos'], trabalho.anexos);
+                console.log(trabalho);
                 $("#job").html(Mustache.render(templates.job, trabalho));
             } else {
                 $("#job").html(Mustache.render(templates.job, trabalho));

@@ -14,8 +14,12 @@ function readTrabalhos(repeat) {
                 }
 
                 trabalhos[i].isStarted = !isEmpty(trabalhos[i].data_de_inicio);
+                trabalhos[i].data_de_inicio = moment(trabalhos[i].data_de_inicio).format("lll");
+                trabalhos[i].data_de_entrega = moment(trabalhos[i].data_de_entrega).format("lll");
                 trabalhos[i].isInPrazo = (!trabalhos[i].isStarted || moment().diff(moment(trabalhos[i].data_de_inicio.replace("T", " ")).add(trabalhos[i].prazo_em_dias, 'd')) < 0 );
             });
+
+            console.log(trabalhos);
 
             Promise.all(promessas).then(() => {
                 $(".dashboard-panel").htmlTemplate('card_job', trabalhos);

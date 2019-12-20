@@ -52,17 +52,30 @@
 
     <div class="col padding-24">
         {{#entregue}}
-            <div class="col padding-8 color-text-gray">
-                Você pode revisar a sua entrega. Uma cópia original da entrega será utilizada para fins de avaliação.
-            </div>
-            <div class="col border-top padding-top">
-                <div class="col padding-4"></div>
-                <button onclick="editar({{id}})" class="btn margin-bottom margin-right left margin-0 padding-xlarge theme radius">
-                    <div class="left padding-small">Revisar material entregue</div>
-                    <i class="material-icons left padding-tiny"
-                       title="Você pode atualizar sua entrega, melhorando o resultado">info</i>
-                </button>
-            </div>
+            {{#status}}
+                <div class="col padding-8 color-text-gray">
+                    Você pode revisar a sua entrega. Uma cópia original da entrega será utilizada para fins de avaliação.
+                </div>
+                <div class="col border-top padding-top">
+                    <div class="col padding-4"></div>
+                    <button onclick="editar({{id}})" class="btn margin-bottom margin-right left margin-0 padding-xlarge theme radius">
+                        <div class="left padding-small">Revisar material entregue</div>
+                        <i class="material-icons left padding-tiny"
+                           title="Você pode atualizar sua entrega, melhorando o resultado">info</i>
+                    </button>
+                </div>
+            {{/status}}
+            {{^status}}
+                <div class="col padding-8 color-text-gray">
+                    Este serviço foi marcado como concluído por um gestor.
+                </div>
+                <div class="col border-top padding-top">
+                    <div class="col padding-4"></div>
+                    <button class="margin-bottom margin-right left margin-0 padding-xlarge theme radius" style="cursor:default;">
+                        <div class="left padding-small">Parabéns! Seu serviço foi aprovado</div>
+                    </button>
+                </div>
+            {{/status}}
         {{/entregue}}
         {{^entregue}}
             {{#isStarted}}

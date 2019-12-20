@@ -7,6 +7,14 @@ if($read->getResult()) {
     $valor_de_entrega = (float) $trabalho['valor'];
 
     /**
+     * Cria cópia de verificação
+     */
+    \Helpers\Helper::createFolderIfNoExist(PATH_HOME . "_cdn/entregas");
+    $f = fopen(PATH_HOME . "_cdn/entregas/{$trabalho['view_name']}.json", "w+");
+    fwrite($f, json_encode($dados));
+    fclose($f);
+
+    /**
      * Verifica se precisa abater valores por atraso
      */
     $dataLimit = date('Y-m-d H:i:s', strtotime($trabalho['data_de_inicio'] . ' + ' . $trabalho['prazo_em_dias'] . ' days'));
