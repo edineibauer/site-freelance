@@ -78,24 +78,41 @@ if(typeof showTrabalho === "undefined") {
     }
 
     function finalizar(id) {
-        pageTransition("entrega", "form", "forward", "#dashboard", {data: {trabalho: parseInt(id)}});
+        db.exeRead("trabalho", parseInt(id)).then(trab => {
+            let entrega = "entrega";
+            if(trab.tipo_de_atividade === "1")
+                entrega = 'design_page';
+
+            pageTransition(entrega, "form", "forward", "#dashboard", {data: {trabalho: parseInt(id)}});
+        });
     }
 
     function editar(id) {
-        db.exeRead("entrega").then(result => {
-            let find = !1;
-            if(!isEmpty(result)) {
-                $.each(result, function (i, e) {
-                    if(e.trabalho == id) {
-                        find = !0;
-                        pageTransition("entrega", "form", "forward", "#dashboard", {data: {id: parseInt(e.id)}});
-                        return !1;
-                    }
-                });
-            }
+        db.exeRead("trabalho", parseInt(id)).then(trab => {
+            let entrega = "entrega";
+            if(trab.tipo_de_atividade === "1")
+                entrega = 'design_page';
 
-            if(!find)
-                pageTransition("entrega", "form", "forward", "#dashboard", {data: {trabalho: parseInt(id)}});
+            console.log(trab);
+            console.log(entrega);
+
+            db.exeRead(entrega).then(result => {
+                let find = !1;
+                if(!isEmpty(result)) {
+                    $.each(result, function (i, e) {
+                        console.log(e.trabalho);
+                        console.log(id);
+                        if(e.trabalho == id) {
+                            find = !0;
+                            pageTransition(entrega, "form", "forward", "#dashboard", {data: {id: parseInt(e.id)}});
+                            return !1;
+                        }
+                    });
+                }
+
+                if(!find)
+                    pageTransition(entrega, "form", "forward", "#dashboard", {data: {trabalho: parseInt(id)}});
+            });
         });
     }
 }

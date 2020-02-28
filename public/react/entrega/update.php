@@ -1,14 +1,12 @@
 <?php
 
-$read = new \Conn\Read();
-$read->exeRead("trabalho", "WHERE id =:id", "id={$dados['trabalho']}");
+/*$read = new \Conn\Read();
+$read->exeRead("design_page", "WHERE id =:id", "id={$dados['design_page']}");
 if($read->getResult()) {
     $trabalho = $read->getResult()[0];
     $valor_de_entrega = (float) $trabalho['valor'];
 
-    /**
-     * Verifica se precisa abater valores por atraso
-     */
+    //Verifica se precisa abater valores por atraso
     $dataLimit = date('Y-m-d H:i:s', strtotime($trabalho['data_de_inicio'] . ' + ' . $trabalho['prazo_em_dias'] . ' days'));
     if($dataLimit > date("Y-m-d H:i:s")) {
         $dataMax = date('Y-m-d H:i:s', strtotime($trabalho['data_de_inicio'] . ' + ' . $trabalho['prazo_maximo'] . ' days'));
@@ -39,4 +37,4 @@ if($read->getResult()) {
 
         \Helpers\Helper::postRequest($projeto['url'] . (!endsWith($projeto['url'], "/") ? "/" : "") . "api/createView", array_merge(['key' => $projeto['chave_api'], 'view_name' => $trabalho['view_name']], $dados));
     }
-}
+}*/

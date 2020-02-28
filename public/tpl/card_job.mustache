@@ -1,5 +1,5 @@
 {{#.}}
-    <div class="col s12 m6 l4 padding-small" id="card-job-{{id}}">
+    <div class="col s12 m6 l4 padding-small no-select" id="card-job-{{id}}">
         <div class="card overflow-hidden radius hover-shadow">
             <a href="job/{{id}}" data-animation="forward" data-target="#dashboard"
                class="col padding-bottom overflow-hidden" style="height: 100px;">
@@ -14,13 +14,13 @@
                     <div class="col s9" style="border-color: #eee!important;">
                         {{#isInPrazo}}
                             <div class="left">Prazo {{prazo_em_dias}} dias</div>
-                            <div class="left padding-tiny"><div class="badge theme radius">{{#isUx}}Design{{/isUx}}{{#isFront}}Front-end{{/isFront}}</div></div>
+                            <div class="left padding-tiny"><div class="badge {{#isUx}}color-orange color-text-white{{/isUx}}{{#isFront}}color-blue{{/isFront}} radius">{{#isUx}}Design{{/isUx}}{{#isFront}}Front-end{{/isFront}}</div></div>
                         {{/isInPrazo}}
                         {{^isInPrazo}}
                             <i class="material-icons left pointer"
                                title="Atrasos geram multa, não atrase muito, senão você não recebe nada!">info</i>
                             <div class="color-text-red left padding-tiny">Atrasado!</div>
-                            <div class="left padding-tiny"><div class="badge theme radius">{{#isUx}}Design{{/isUx}}{{#isFront}}Front-end{{/isFront}}</div></div>
+                            <div class="left padding-tiny"><div class="badge {{#isUx}}color-orange color-text-white{{/isUx}}{{#isFront}}color-blue{{/isFront}} radius">{{#isUx}}Design{{/isUx}}{{#isFront}}Front-end{{/isFront}}</div></div>
                         {{/isInPrazo}}
                     </div>
                     <div class="col s3 align-right">
@@ -31,7 +31,7 @@
                 {{#entregue}}
                     <div class="col s9">
                         <div class="left">Entregue!</div>
-                        <div class="left padding-left"><div class="badge {{#isUx}}color-red{{/isUx}}{{#isFront}}color-green{{/isFront}} radius">{{#isUx}}Design{{/isUx}}{{#isFront}}Front-end{{/isFront}}</div></div>
+                        <div class="left padding-left"><div class="badge {{#isUx}}color-orange color-text-white{{/isUx}}{{#isFront}}color-blue{{/isFront}} radius">{{#isUx}}Design{{/isUx}}{{#isFront}}Front-end{{/isFront}}</div></div>
                     </div>
                     <div class="col s3 align-right">
                         R${{valor_de_entrega}}

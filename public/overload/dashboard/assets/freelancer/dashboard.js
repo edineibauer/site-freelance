@@ -38,7 +38,7 @@ function cancelar(id) {
     if(confirm("Deseja cancelar este serviço?")) {
         dbLocal.exeRead("trabalho", id).then(data => {
             data.freelance_responsavel = null;
-            db.exeCreate("trabalho", data).then(t => {
+            db.exeCreate("trabalho", data).then(() => {
                 dbLocal.exeDelete("trabalho", id);
                 toast("Serviço foi cancelado", 3000, "toast-success");
                 $("#card-job-" + id).remove();
