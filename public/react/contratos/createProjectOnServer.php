@@ -39,11 +39,11 @@ shell_exec("mkdir /var/www/{$sub} && mkdir /var/www/{$sub}/public_html");
  * Cria tmp Conf vhost para poder mover via shell para a pasta correta
  * Ativa o subdomínio e aponta para o diretório e depois remove tmp Conf vhost
  */
-$f = fopen("{$sub}.ag3tecnologia.com.conf", "w");
+$f = fopen("{$sub}.{$domainCloud}.conf", "w");
 fwrite($f, str_replace("{{sub}}", $sub, file_get_contents($dirDefaultConf)));
 fclose($f);
-shell_exec("mv {$sub}.ag3tecnologia.com.conf /etc/apache2/sites-available/{$sub}.ag3tecnologia.com.conf");
-shell_exec("a2ensite {$sub}.ag3tecnologia.com.conf");
+shell_exec("mv {$sub}.{$domainCloud}.conf /etc/apache2/sites-available/{$sub}.{$domainCloud}.conf");
+shell_exec("a2ensite {$sub}.{$domainCloud}.conf");
 
 /**
  * Salva a senha do banco recem criada
@@ -68,11 +68,6 @@ if (!$conn->connect_error) {
 $conn->close();
 
 /**
- * Cria o SSL
- */
-echo shell_exec("certbot --apache -n -d {$sub}.ag3tecnologia.com.br");
-
-/**
  * Cria composer json com require ueb/dashboard
  */
 shell_exec("cp -r {$dirDefaultComposer} /var/www/{$sub}/public_html/composer.json");
@@ -80,13 +75,29 @@ shell_exec("cp -r {$dirDefaultComposer} /var/www/{$sub}/public_html/composer.jso
 /**
  * Cria crontab com composer update para $sub
  */
-$newCron = "cd /var/www/{$sub}/public_html && /usr/local/bin/composer update --no-plugins --no-scripts && \n" . file_get_contents("/var/www/freelancer/cron.sh");
+$newCron = "certbot --apache --redirect -d {$sub}.{$domainCloud} && /usr/bin/php7.2 /var/www/{$sub}/public_html/public/cron/index.php && cd /var/www/{$sub}/public_html && /usr/local/bin/composer update ueb/* --no-plugins --no-scripts\n" . file_get_contents("/var/www/freelancer/cron.sh");
 $f = fopen("tpmNewCron.txt", "w");
 fwrite($f, $newCron);
 fclose($f);
 shell_exec("mv tpmNewCron.txt /var/www/freelancer/cron.sh && cd /var/www/freelancer && chmod +x cron.sh");
 
 /**
+ * Atualiza o crontab para remover o comando de certbot após executá-lo
+ */
+mkdir("/var/www/{$sub}/public_html/public");
+mkdir("/var/www/{$sub}/public_html/public/cron");
+$f = fopen("/var/www/{$sub}/public_html/public/cron/index.php", "w");
+fwrite($f, "<?php \$f=fopen(\"tpmNewCron.txt\", \"w\");fwrite(\$f, str_replace(\"certbot --apache --redirect -d {$sub}.{$domainCloud} && \", \"\", file_get_contents(\"/var/www/freelancer/cron.sh\")));fclose(\$f);shell_exec(\"mv tpmNewCron.txt /var/www/freelancer/cron.sh && cd /var/www/freelancer && chmod +x cron.sh && cd /var/www/{$sub}/public_html && rm -r public\");");
+fclose($f);
+
+/**
  * Da permissão na pasta
  */
 echo shell_exec("cd /var/www/{$sub} && chown www-data:www-data public_html -R && systemctl restart apache2");
+
+/**
+ * Cria index redirect to install
+ */
+$f = fopen("/var/www/{$sub}/public_html/index.php", "w");
+fwrite($f, "<?php if(file_exists(\"vendor\")) { header(\"Location: vendor/ueb/config/public/startup.php\"); } else { echo \"<h1 style='width: 100%; float:left;text-align: center;padding: 50px 0'>Aguarde 1 min para o cron instalar o Uebster</h1>\";}");
+fclose($f);
